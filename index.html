@@ -7,12 +7,26 @@
 </head>
 <body>
 	<div id='search'>
-		Search <input type='text' id='searchTextField'>
+		<input type='text' id='searchTextField' value='Search a Marker'>
+	</div>
+	<div>
+		<ul id='pointList' data-bind='foreach: pointList'>
+			<li class='list'>
+				<h2><a href="" class='point' data-bind='text: name, attr: { href: URL }'></a></h2>
+					<p>Location: 
+						<span data-bind='text: loc'></span>
+					</p>
+					<p>Description: 
+						<span data-bind='text: des'></span>
+					</p>
+			</li>
+		</ul>
 	</div>
 	<div id='map'></div>
 
-	<script type="text/javascript" scr='scripts/jquery-2.1.4.js'></script>
 	<script type="text/javascript" src='scripts/knockout.js'></script>
+	<script type="text/javascript" src='scripts/jquery.js'></script>
+	<script type="text/javascript" src='scripts/appMap.js'></script>
 	<script type="text/javascript" src='scripts/app.js'></script>
 	<script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAI_Cibe9ROZacDvxplVIt3NiGkJNKgkOM&libraries=places,geometry&callback=initMap">
