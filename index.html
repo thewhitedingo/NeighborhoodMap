@@ -10,11 +10,11 @@
 		<input type='text' id='searchTextField' value='Search a Marker'>
 	</div>
 	<div>
-		<ul id='pointList' data-bind='foreach: pointList'>
-			<li class='list' data-bind='event: { click: $parent.markerPlacer }'>
+		<ul id='pointList' data-bind='foreach: pointList,'>
+			<li class='list'>
 				<h2><a href="" class='point' data-bind='text: name, attr: { href: URL }'></a></h2>
-					<p>Location: 
-						<span data-bind='text: loc'></span>
+					<p data-bind='with: marker'>Location: 
+						<span data-bind='text: title'></span>
 					</p>
 					<p>Description: 
 						<span data-bind='text: des'></span>
