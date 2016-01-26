@@ -11,7 +11,7 @@
 	</div>
 	<div>
 		<ul id='pointList' data-bind='foreach: pointList'>
-			<li class='list'>
+			<li class='list' data-bind='event: { click: $parent.markerPlacer }'>
 				<h2><a href="" class='point' data-bind='text: name, attr: { href: URL }'></a></h2>
 					<p>Location: 
 						<span data-bind='text: loc'></span>
