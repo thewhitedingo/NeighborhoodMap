@@ -5,7 +5,6 @@ function initMap() {
     this.loc = ko.observable(data.loc);
     this.des = ko.observable(data.des);
     this.URL = ko.observable(data.URL);
-    this.marker = ko.observable(data.marker);
   };
 
   initialPoints = [
@@ -13,51 +12,43 @@ function initMap() {
       name: "Rhema's Soul Cuisine",
       loc: "Queen Creek, AZ",
       des: "A wonderful place to get some Southen-Style Barbeque, you'll be back for days after!",
-      URL: "http://www.rhemasoulcuisine.com/",
-      marker: "" 
+      URL: "http://www.rhemasoulcuisine.com/" 
     },
     {
       name: "Schnepf Farms", 
       loc: "Queen Creek, AZ",
       des: "A nice farm to visit. They hold special events for the community throughout the year.",
-      URL: "http://www.schnepffarms.com/",
-      marker: ""
+      URL: "http://www.schnepffarms.com/"
     },
     {
       name: "Buffalo Wild Wings",
       loc: "Queen Creek, AZ",
       des: "Always a great place to eat!",
-      URL: "http://www.buffalowildwings.com/en/locations/Detail/0601",
-      marker: ""
+      URL: "http://www.buffalowildwings.com/en/locations/Detail/0601"
     },
     {
       name: "Soda Shop",
       loc: "Gilbert, AZ",
       des: "A new spin on classic drinks.",
-      URL: "http://www.thesodashop.co/",
-      marker: ""
+      URL: "http://www.thesodashop.co/"
     },
     {
       name: "Kokobelli Bagel Cafe",
       loc: "Mesa, AZ",
       des: "A bagel for breakfast or lunch. Better bagels are always good.",
-      URL: "https://www.facebook.com/KokobelliBagelCafe/",
-      marker: ""
+      URL: "https://www.facebook.com/KokobelliBagelCafe/"
     }
   ]
-
-
 //declare location array for input and markers
   var locations;
-  var mapMarkers = [];
   var mapOptions = {
     disableDefaultUI: true,
       center: {lat: 33.25179, lng: -111.641777},
       zoom: 14
-  };
+  }
 
 //grab map and center it to specified location and append it to DOM
-  map = new google.maps.Map(document.getElementById('map'),mapOptions); 
+  map = new google.maps.Map(document.getElementById('map'),mapOptions);
 
   var locationFinder = function() {
 
@@ -68,16 +59,7 @@ function initMap() {
     }
 
     return locations;
-  };
-
-  var j = initialPoints.length - (initialPoints.length - 1);
-
-  var markerToPoint = function() {
-    for (var i = 0; i < initialPoints.length; i++) {
-      initialPoints[i].marker = mapMarkers[i];
-      console.log(initialPoints[i].marker);
-    };
-  };
+  }
 
   var createMapMarker = function (pointData) {
     var lat = pointData.geometry.location.lat();
@@ -113,14 +95,6 @@ function initMap() {
     bounds.extend(new google.maps.LatLng(lat, lon));
     map.fitBounds(bounds);
     map.setCenter(bounds.getCenter());
-    mapMarkers.push(marker);
-
-    if (j == initialPoints.length) {
-      markerToPoint();
-      ko.applyBindings(new viewModel());
-    } else {
-      j++;
-    };
   }
 // callback for the Maps API search
   var callback = function(results, status) {
@@ -159,12 +133,6 @@ function initMap() {
       self.pointList.push(new Point (point));
     });
 
-    self.focusMarker = function(marker) {
-      map.setZoom(14);
-      map.setCenter(marker.getPosition());
-      console.log(marker.title);
-    };
-
     search.on('focusin', function() {
       search.attr('value', '');
     });
@@ -173,4 +141,6 @@ function initMap() {
       search.attr('value', 'Search a Marker');
     });
   };
+
+  ko.applyBindings(new viewModel());
 };
