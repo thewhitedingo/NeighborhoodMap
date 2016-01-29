@@ -15,6 +15,10 @@
 				<h2 class='point' data-bind='text: name'></h2>
 					<p>Location: 
 						<span data-bind='text: loc'></span>
+					</p>
+					<p>Description:
+						<span data-bind='text: des'></span>
+					</p>
 			</li>
 		</ul>
 	</div>
@@ -22,11 +26,11 @@
 
 	<script type="text/javascript" src='scripts/knockout.js'></script>
 	<script type="text/javascript" src='scripts/jquery.js'></script>
-	<script type="text/javascript" src='scripts/app.js'></script>
-	<script type="text/javascript" src='scripts/viewModel.js'></script>
 	<script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAI_Cibe9ROZacDvxplVIt3NiGkJNKgkOM&libraries=places,geometry&callback=initMap">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAI_Cibe9ROZacDvxplVIt3NiGkJNKgkOM&libraries=places,geometry">
   </script>
+	<script type="text/javascript" src='scripts/app.js'></script>
+	<script type="text/javascript" src='scripts/viewmodel.js'></script>
 
 </body>
 </html>

@@ -1,53 +1,41 @@
 function initMap() {
-
+  var map;
+  var infoWindow;
     //grab map to paint map to page
   var mapOptions = {
     disableDefaultUI: true,
     center: {lat: 33.25179, lng: -111.641777},
     zoom: 14
-  }
+  };
+  window.mapBounds = new google.maps.LatLngBounds();
 
-  map = new google.maps.Map(document.getElementById('map'),mapOptions);
+  map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-//declare location array for input and markers
-  var locations;
-  var j = 1;
-  var markerList = [];
-  var addressList = [];
-  var nameList = [];
-
-  var locationFinder = function() {
-
-    var locations = [];
-
-    for (var point in initialPoints) {
-      locations.push(initialPoints[point]);
-    }
-
-    return locations;
-  }
-
-  var markerToPoint = function() {
-    for (var i = 0; i < initialPoints.length; i++) {
-      initialPoints[i].marker = markerList[i];
-      initialPoints[i].name = nameList[i];
-      initialPoints[i].loc = addressList[i];
-    };
+  for (var i = 0; i < initialPoints.length; i++) {
+    createMapMarker(map, initialPoints[i]);
   };
 
-  var createMapMarker = function (pointData) {
-    var lat = pointData.geometry.location.lat();
-    var lon = pointData.geometry.location.lng();
-    var name = pointData.name;
+  return map;
+}
+
+
+var markerToPoint = function(point, marker) {
+    point.marker = marker;
+};
+
+var createMapMarker = function (map, point) {
+    var lat = point.lat;
+    var lng = point.lng;
+    var LatLng = {lat, lng};
+    var name = point.name;
     var bounds = window.mapBounds;
-    var address = pointData.formatted_address;
     var marker = new google.maps.Marker({
       map: map,
-      position: pointData.geometry.location,
+      position: LatLng,
       title: name
     });
 
-    var infoContent = '<h4 class="info">' + pointData.name + '</h4><p>' + pointData.formatted_address + '</p>';
+    var infoContent = '<h4>' + point.name + '</h4><p>' + point.des + '</p>';
 
     var infoWindow = new google.maps.InfoWindow({
       content: infoContent
@@ -62,51 +50,46 @@ function initMap() {
     });
 
     marker.addListener('click', function() {
-      map.setZoom(14);
+      map.setZoom(16);
       map.setCenter(marker.getPosition());
     });
 
-    bounds.extend(new google.maps.LatLng(lat, lon));
+    bounds.extend(new google.maps.LatLng(lat, lng));
+    bounds.extend(new google.maps.LatLng(lat, lng));
     map.fitBounds(bounds);
     map.setCenter(bounds.getCenter());
-    markerList.push(marker);
-    addressList.push(address);
-    nameList.push(name);
-    markerToPoint();
-
-    if (j == locations.length) {
-
-      ko.applyBindings(new viewModel());
-    } else {
-      j++;
-    };
-  }
+    markerToPoint(point, marker);
+};
 // callback for the Maps API search
-  var callback = function(results, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-      createMapMarker(results[0]);
-    }
-  };
+var callback = function(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    createMapMarker(results[0]);
+  }
+};
 
-  var markerPlacer = function() {
-    var service = new google.maps.places.PlacesService(map);
+var locationFinder = function() {
 
-    locations = locationFinder();
+  var locations = [];
 
-    for (var point in locations) {
-      var query = locations[point].name + ' ' + locations[point].loc;
-
-      var request = {
-        query: query
-      };
-
-      service.textSearch(request, callback);
-    }
+  for (var point in initialPoints) {
+    locations.push(initialPoints[point]);
   }
 
-  window.mapBounds = new google.maps.LatLngBounds();
+  return locations;
+};
 
+var placeSearch = function() {
+  var service = new google.maps.places.PlacesService(map);
 
+  locations = locationFinder();
 
-  markerPlacer();
+  for (var point in locations) {
+    var query = locations[point].name + ' ' + locations[point].loc;
+
+    var request = {
+      query: query
+    };
+
+    service.textSearch(request, callback);
+  }
 };
