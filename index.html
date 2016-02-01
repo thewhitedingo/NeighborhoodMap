@@ -7,10 +7,11 @@
 </head>
 <body>
 	<div id='search'>
-		<input type='text' id='searchTextField' placeholder='Search a Marker'>
+		<input type='text' id='searchTextField' placeholder='Search a Marker' data-bind='textInput: filter, valueupdate: "afterkeydown"'>
 	</div>
+	<div id='zoom'><button data-bind='click: resetZoom'>Reset Zoom</button></div>
 	<div>
-		<ul id='pointList' data-bind='foreach: pointList'>
+		<ul id='pointList' data-bind='foreach: filteredItems'>
 			<li class='list' data-bind='click: $parent.focusMarker'>
 				<h2 class='point' data-bind='text: name'></h2>
 					<p>Location: 
@@ -26,6 +27,9 @@
 
 	<script type="text/javascript" src='scripts/knockout.js'></script>
 	<script type="text/javascript" src='scripts/jquery.js'></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
+    <script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
 	<script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAI_Cibe9ROZacDvxplVIt3NiGkJNKgkOM&libraries=places,geometry">
   </script>
