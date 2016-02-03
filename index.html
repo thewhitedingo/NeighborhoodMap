@@ -9,7 +9,7 @@
 	<div id='search'>
 		<input type='text' id='searchTextField' placeholder='Search a Marker' data-bind='textInput: filter, valueupdate: "afterkeydown"'>
 	</div>
-	<div id='zoom'><button data-bind='click: resetZoom'>Reset Zoom</button></div>
+	<div id='zoom'><button data-bind='click: resetZoom'>Reset Map</button></div>
 	<div>
 		<ul id='pointList' data-bind='foreach: filteredItems'>
 			<li class='list' data-bind='click: $parent.focusMarker'>
@@ -27,11 +27,11 @@
 
 	<script type="text/javascript" src='scripts/knockout.js'></script>
 	<script type="text/javascript" src='scripts/jquery.js'></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-    <script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
-    <script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+  <script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
+  <script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
 	<script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAI_Cibe9ROZacDvxplVIt3NiGkJNKgkOM&libraries=places,geometry">
+     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAI_Cibe9ROZacDvxplVIt3NiGkJNKgkOM&libraries=places,geometry">
   </script>
 	<script type="text/javascript" src='scripts/app.js'></script>
 	<script type="text/javascript" src='scripts/viewmodel.js'></script>

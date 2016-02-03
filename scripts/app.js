@@ -1,6 +1,5 @@
 function initMap() {
   var map;
-  var infoWindow;
     //grab map to paint map to page
   var mapOptions = {
     disableDefaultUI: true,
@@ -12,37 +11,22 @@ function initMap() {
   map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
   for (var i = 0; i < initialPoints.length; i++) {
-    yelpSearch(initialPoints[i]);
-  };
-
-  for (var i = 0; i < initialPoints.length; i++) {
     createMapMarker(map, initialPoints[i]);
   };
 
   return map;
 }
 
-var yelpSearch = function(point) {
- 
-}
-
 
 var markerToPoint = function(point, marker) {
-    point.marker = marker;
+  point.marker = marker;
 };
 
-var createMapMarker = function (map, point) {
-  var lat = point.lat;
-  var lng = point.lng;
-  var LatLng = {lat, lng};
-  var name = point.name;
-  var bounds = window.mapBounds;
-  var yelpContent;
-  var marker = new google.maps.Marker({
-    map: map,
-    position: LatLng,
-    title: name
-  });
+var yelpToPoint = function(point, content) {
+  point.yelp = content;
+}
+
+var yelpSearch = function(point, marker, map, LatLng) {
    //yelp API auth keys
   var auth = {
     con_key:  "h8iP1qgBVONI_B_Sm4OJJQ",
@@ -51,9 +35,6 @@ var createMapMarker = function (map, point) {
     token_secret: "Cet2iIeb0OWR8Asa5bky8a2CHes",
     sig_method: "hmac-sha1"
   };
-
-  var terms = 'food';
-  var near = 'San+Francisco';
 
   var accessor = {
       consumerSecret : auth.con_secret,
@@ -83,36 +64,65 @@ var createMapMarker = function (map, point) {
     'url' : message.action,
     'data' : parameterMap,
     'dataType' : 'jsonp',
-    'jsonpCallback' : 'cb',
     'timeout': 5000,
     'success' : function(data, textStats, XMLHttpRequest) {
-      console.log(data);
       var place = data['businesses'][0];
       address = place.location.display_address;
       rating = place.rating_img_url_small;
       snippet = place.snippet_text;
-
+      //set content for infowindows
       yelpContent = '<p>' + snippet + '</p><p>' + address + '</p><p>\
         <image src="' + rating + '"></p>';
+
+      var content = '<h4>' + point.name + '</h4>' + yelpContent;
+      // once the data has returned then add listeners to the markers to correctly set content
+      marker.addListener('mouseover', function() {
+        infoWindow.setContent(content);
+        infoWindow.setPosition(LatLng);
+        infoWindow.open(map);
+      });
+
+      marker.addListener('mouseout', function() {
+        infoWindow.close();
+      });
+
+      marker.addListener('click', function() {
+        infoWindow.close();
+        infoWindow.setContent(content);
+        infoWindow.setPosition(LatLng);
+        infoWindow.open(map);
+        map.setZoom(18);
+        map.setCenter(marker.getPosition());
+      });
+    },
+    'error' : function(data, textStats, XMLHttpRequest) {
+      console.log(point.name + ' did not return resuls, possible connnection error.');
+      console.log(XMLHttpRequest);
+      yelpContent = '<p>' + point.des + '</p>';
+      var content = '<h4>' + point.name + '</h4>' + yelpContent;
+
+      marker.addListener('mouseover', function() {
+          infoWindow.setContent(content);
+          infoWindow.setPosition(LatLng);
+          infoWindow.open(map);
+      });
     }
   });
+}
 
-  var content = '<h4>' + point.name + '</h4>' + yelpContent;
-
-  marker.addListener('mouseover', function() {
-    infoWindow.setContent(content);
-    infoWindow.setPosition(LatLng);
-    infoWindow.open(map);
+var createMapMarker = function (map, point) {
+  var lat = point.lat;
+  var lng = point.lng;
+  var LatLng = {lat, lng};
+  var name = point.name;
+  var bounds = window.mapBounds;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: LatLng,
+    title: name
   });
 
-  marker.addListener('mouseout', function() {
-      infoWindow.close();
-  });
-
-  marker.addListener('click', function() {
-    map.setZoom(18);
-    map.setCenter(marker.getPosition());
-  });
+  yelpSearch(point, marker, map, LatLng);
 
   bounds.extend(new google.maps.LatLng(lat, lng));
   bounds.extend(new google.maps.LatLng(lat, lng));
@@ -120,6 +130,9 @@ var createMapMarker = function (map, point) {
   map.setCenter(bounds.getCenter());
   markerToPoint(point, marker);
 };
+
+// This section is for the Google Places library, it can be used to add a function for users
+// to add their own points to the list
 // callback for the Maps API search
 var callback = function(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
