@@ -47,7 +47,7 @@ html, body {
 	opacity: .8;
 	position: absolute;
 	padding: 0;
-	height: 92vh;
+	height: 90vh;
 	z-index: 1;
 	top: 40px;
 	left: 10px;
@@ -75,7 +75,6 @@ html, body {
 
 .list:hover {
 	font-size: 100%;
-	width: 90%;
 	background: #fff;
 	opacity: 1;
 }

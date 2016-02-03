@@ -77,6 +77,7 @@ var viewModel = function() {
 		var lng = -111.66665
 		var position = {lat, lng};
 
+		infoWindow.close();
 		map.setZoom(12);
 		map.setCenter(position);
 	}
