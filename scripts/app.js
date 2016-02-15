@@ -69,10 +69,14 @@ var yelpSearch = function(point, marker, map, LatLng) {
       var place = data['businesses'][0];
       address = place.location.display_address;
       rating = place.rating_img_url_small;
+      reviewCount = place.review_count;
       snippet = place.snippet_text;
+      url = place.url;
+      phone = place.phone;
+      yelp = 'http://s3-media2.fl.yelpcdn.com/assets/srv0/www_pages/95212dafe621/assets/img/brand_guidelines/yelp-2c.png'
       //set content for infowindows
-      yelpContent = '<p>' + snippet + '</p><p>' + address + '</p><p>\
-        <image src="' + rating + '"></p>';
+      yelpContent = '<p>' + phone + '</p><p>' + snippet + '<a href="' + url + '"">read more</a></p><p>' + address + '</p><p>\
+        <image src="' + rating + '"> (' + reviewCount + ')</p><p><image src="' + yelp + '" style="width:15%;height:10%;"></p>';
 
       var content = '<h4>' + point.name + '</h4>' + yelpContent;
       // once the data has returned then add listeners to the markers to correctly set content
@@ -129,40 +133,4 @@ var createMapMarker = function (map, point) {
   map.fitBounds(bounds);
   map.setCenter(bounds.getCenter());
   markerToPoint(point, marker);
-};
-
-// This section is for the Google Places library, it can be used to add a function for users
-// to add their own points to the list
-// callback for the Maps API search
-var callback = function(results, status) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-    createMapMarker(results[0]);
-  }
-};
-
-var locationFinder = function() {
-
-  var locations = [];
-
-  for (var point in initialPoints) {
-    locations.push(initialPoints[point]);
-  }
-
-  return locations;
-};
-
-var placeSearch = function() {
-  var service = new google.maps.places.PlacesService(map);
-
-  locations = locationFinder();
-
-  for (var point in locations) {
-    var query = locations[point].name + ' ' + locations[point].loc;
-
-    var request = {
-      query: query
-    };
-
-    service.textSearch(request, callback);
-  }
 };

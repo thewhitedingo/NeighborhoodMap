@@ -54,11 +54,13 @@ initialPoints = [
 // callback for googlemaps api to run
 var map = new initMap();
 // create global infowindow to move between points
-var infoWindow =  new google.maps.InfoWindow({pixelOffset: new google.maps.Size(0,-40), maxWidth: 300});
+var infoWindow =  new google.maps.InfoWindow({pixelOffset: new google.maps.Size(0,-40), maxWidth: 150});
 // declare viewmodel for KO bindings
 var viewModel = function() {
 	//assign this to variable for better assignment and easier readability
 	var self = this;
+
+	this.list = ko.observable();
 	//declare array to push points into
 	self.pointList = ko.observableArray([]);
 	//push points to observable array for bindings
@@ -80,6 +82,13 @@ var viewModel = function() {
 		infoWindow.close();
 		map.setZoom(12);
 		map.setCenter(position);
+	}
+	//for use in toggling the list in case it gets in the way 
+	self.hideList = function() {
+		$('#pointList, #search').toggleClass('hide');
+	}
+	self.showList = function() {
+		self.list(true);
 	}
 	// bindings for index, allows user input in filter to change list items
 	self.filteredItems = ko.computed(function() {

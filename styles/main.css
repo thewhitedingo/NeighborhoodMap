@@ -43,11 +43,9 @@ html, body {
 }
 
 #pointList {
-	background: #fff;
 	opacity: .8;
 	position: absolute;
 	padding: 0;
-	height: 90vh;
 	z-index: 1;
 	top: 40px;
 	left: 10px;
@@ -87,3 +85,42 @@ html, body {
 .info {
 	z-index: 2;
 }
+
+.hide {
+	display: none;
+}
+
+#showList {
+	display: none;
+}
+
+
+@media screen and (max-width: 999px) {
+	#pointList {
+		position: absolute;
+		width: 100px;
+		overflow: scroll;
+		height: 80vh;
+	}
+
+	.list {
+		width: 80px;
+		font-size: 10px;
+	}
+
+	.list:hover {
+		font-size: 10px;
+	}
+
+	#search {
+		width: 100px;
+	}
+
+	#reset {
+		display: none;
+	}
+
+	#showList {
+		display: inline;
+	}
+} 
